@@ -7,19 +7,23 @@ const web3 = new Web3(ganache.provider());
 
 let inbox;
 let accounts;
-
+const INITIAL_STRING = 'HI THERE!'
 beforeEach(async () => {
     //Getting all easily accessible accounts and use one 
     accounts = await web3.eth.getAccounts();
     inbox = await new web3.eth.Contract(JSON.parse(interface))
-    //arguments are what the constructor method takes
-    .deploy({ data: bytecode, arguments: ['Hi There!'] })
-    .send({ from: accounts[0], gas: '1000000' });
+        //arguments are what the constructor method takes
+        .deploy({ data: bytecode, arguments: [INITIAL_STRING] })
+        .send({ from: accounts[0], gas: '1000000' });
 
 });
 describe('First contract tests ', () => {
 
     it('Deployes the contract', () => {
-        console.log(inbox)
+        assert.ok(inbox.options.address);
+    });
+    it('Has a default message', async () => {
+        const message = await inbox.methods.getMessage().call();
+        assert.equal(message, INITIAL_STRING);
     });
 });
