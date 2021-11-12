@@ -17,13 +17,22 @@ beforeEach(async () => {
         .send({ from: accounts[0], gas: '1000000' });
 
 });
-describe('First contract tests ', () => {
+describe('Message Contract ', () => {
 
     it('Deployes the contract', () => {
         assert.ok(inbox.options.address);
     });
+
     it('Has a default message', async () => {
         const message = await inbox.methods.getMessage().call();
         assert.equal(message, INITIAL_STRING);
     });
+    it('Can Update the mesage', async() => {
+        const expectedMessage = 'BYE';
+        var newMessage;
+        await inbox.methods.setMessage(expectedMessage).send({from:accounts[0]});
+        newMessage = await inbox.methods.getMessage().call();
+        assert.equal
+    });
+
 });
